@@ -1,45 +1,35 @@
+
 #include <stdio.h>
+#include <math.h>
 
-int lst[10000001];
-int is_prime(int n)
+int a[10000001] = {0};
+int s()
 {
-    if (n == 1)
-    {
-        lst[n] = 0;
-        return 0;
-    }
-    if (n == 2)
-    {
-        lst[n] = 1;
-        return 1;
-    }
-    if (n % 2 == 0)
-    {
-        lst[n] = 0;
-        return 0;
-    }
-    if (n % 3 == 0)
-    {
-        lst[n] = 0;
-        return 0;
-    }
-    if (n % 6 != 1 && n % 6 != 5)
-    {
-        lst[n] = 0;
-        return 0;
-    }
-       
-
+	int i, j, n;
+	n = (int)sqrt(10000001) + 1;
+	a[1] = 1;
+	a[2] = 0;
+	for(i = 1;i <= n;i ++)
+	{
+		if(a[i])
+        {
+            continue;
+        }
+        
+		for(j = i;j * i < 10000001;j ++)
+			a[i * j] = 1;
+	}
 }
 
-int main(void)
+int main()
 {
-    int a, b;
-    scanf("%d %d", &a, &b);
-
-    int began = (a / 6) + (a % 6 ? 1 : 0);
-    int end  = (b / 6) + (b % 6 ? 1 : 0);
-
-    int sum = 0;
-
+	s();
+	int  i, c, x, y;
+    scanf("%d %d", &x, &y);
+	c = 0;
+	for(i = x;i <= y - 5;i ++)
+		if(a[i] == 0 && a[i + 6] == 0)
+			c += 1;
+	printf("%d\n", c);	
+	return 0;
 }
