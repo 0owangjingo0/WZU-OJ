@@ -20,40 +20,49 @@ int main()
     return 0;
 }
 /*你的提交的代码将被添加在此处，请完成题目所要求的函数的定义*/
-BTree createTree(char s[], int left, int right)
+BTree createTree(char s[],int left,int right)
 {
-    if (left > right)
+    BTree root = NULL;
+    BTree stack[100];
+    int top = -1;
+    BTree p = NULL;
+    int k = 0;
+    for (int i = left; i <= right; i++)
     {
-        return NULL;
-    }
-
-    BTree node = (BTree)malloc(sizeof(BTNode));
-    node -> data = s[left];
-    node -> lchild = node -> rchild = NULL;
-
-    int lc = 0, rc = 0, mid = 0;
-    for (int i = left + 2; i < right; i++)
-    {
-        if (s[i] == '(')
+        switch (s[i])
         {
-            lc++;
-        }
-        else if (s[i] == ')')
-        {
-            rc++;
-        }
-        if (lc == rc)
-        {
-            mid = i;
+        case '(':
+            top++;
+            stack[top] = p;
+            k = 1;
             break;
+        case ')':
+            top--;
+            break;
+        case ',':
+            k = 2;
+            break;
+        default:
+            p = (BTree)malloc(sizeof(BTNode));
+            p -> data = s[i];
+            p -> lchild = p -> rchild = NULL;
+            if (root == NULL)
+            {
+                root = p;
+            }
+            else
+            {
+                switch (k)
+                {
+                case 1:
+                    stack[top] -> lchild = p;
+                    break;
+                case 2:
+                    stack[top] -> rchild = p;
+                    break;
+                }
+            }
         }
     }
-
-    if (mid != 0)
-    {
-        node -> lchild = createTree(s, left + 2, mid);
-        node -> rchild = createTree(s, mid + 2, right - 1);
-    }
-
-    return node;
+    return root;
 }
